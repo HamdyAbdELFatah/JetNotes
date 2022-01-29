@@ -81,7 +81,8 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                         onColorSelect = { color ->
                             val newNoteEntry = noteEntry.copy(color = color)
                             viewModel.onNoteEntryChange(newNoteEntry)
-                        }
+                            coroutineScope.launch { bottomDrawerState.close() }
+                        },
                     )
                 },
                 content = {
