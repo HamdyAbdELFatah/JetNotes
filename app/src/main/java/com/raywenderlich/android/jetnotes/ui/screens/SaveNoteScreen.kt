@@ -1,5 +1,6 @@
 package com.raywenderlich.android.jetnotes.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -44,6 +45,14 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
             mutableStateOf(false)
         }
     val coroutineScope = rememberCoroutineScope()
+
+    BackHandler(onBack = {
+        if (bottomDrawerState.isOpen) {
+            coroutineScope.launch { bottomDrawerState.close() }
+        } else {
+            JetNotesRouter.navigateTo(Screen.Notes)
+        }
+    })
     Scaffold(
         topBar = {
             val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID

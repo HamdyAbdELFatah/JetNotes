@@ -2,7 +2,6 @@ package com.raywenderlich.android.jetnotes.ui.screens
 
 import androidx.compose.runtime.Composable
 import com.raywenderlich.android.jetnotes.viewmodel.MainViewModel
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,9 +15,9 @@ import com.raywenderlich.android.jetnotes.domain.model.NoteModel
 import com.raywenderlich.android.jetnotes.routing.Screen
 import com.raywenderlich.android.jetnotes.ui.components.AppDrawer
 import com.raywenderlich.android.jetnotes.ui.components.Note
-import com.raywenderlich.android.jetnotes.ui.components.TopAppBar
 import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun NotesScreen(viewModel: MainViewModel) {
 
@@ -31,8 +30,6 @@ fun NotesScreen(viewModel: MainViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = "JetNotes",
-                icon = Icons.Filled.List,
                 onIconClick = {
                     coroutineScope.launch {
                         scaffoldState.drawerState.open()
@@ -80,6 +77,31 @@ fun NotesScreen(viewModel: MainViewModel) {
 }
 
 @Composable
+fun TopAppBar(
+    onIconClick: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "JetNotes",
+                color = MaterialTheme.colors.onPrimary
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                onIconClick()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.List,
+                    contentDescription = "Drawer Button"
+                )
+            }
+        }
+    )
+}
+
+@ExperimentalMaterialApi
+@Composable
 private fun NotesList(
     notes: List<NoteModel>,
     onNoteCheckedChange: (NoteModel) -> Unit,
@@ -97,6 +119,7 @@ private fun NotesList(
     }
 }
 
+@ExperimentalMaterialApi
 @Preview
 @Composable
 private fun NotesListPreview() {
